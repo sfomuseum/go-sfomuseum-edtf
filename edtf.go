@@ -157,7 +157,7 @@ func EDTFStringFromEARLY(raw string) (string, error) {
 	edtf_str := fmt.Sprintf("%04d-01/%04d-04", yyyy, yyyy)
 
 	if circa != "" {
-		edtf_str = fmt.Sprintf("%04d-01%s/%04d-04%s", yyyy, _edtf.APPROXIMATE, yyyy, _edtf.APPROXIMATE)
+		edtf_str = fmt.Sprintf("%04d-%s01/%04d-%s04", yyyy, _edtf.APPROXIMATE, yyyy, _edtf.APPROXIMATE)
 	}
 
 	return edtf_str, nil
@@ -183,7 +183,7 @@ func EDTFStringFromMID(raw string) (string, error) {
 	edtf_str := fmt.Sprintf("%04d-05/%04d-08", yyyy, yyyy)
 
 	if circa != "" {
-		edtf_str = fmt.Sprintf("%04d-05%s/%04d-08%s", yyyy, _edtf.APPROXIMATE, yyyy, _edtf.APPROXIMATE)
+		edtf_str = fmt.Sprintf("%04d-%s05/%04d-%s08", yyyy, _edtf.APPROXIMATE, yyyy, _edtf.APPROXIMATE)
 	}
 
 	return edtf_str, nil
@@ -209,7 +209,7 @@ func EDTFStringFromLATE(raw string) (string, error) {
 	edtf_str := fmt.Sprintf("%04d-09/%04d-12", yyyy, yyyy)
 
 	if circa != "" {
-		edtf_str = fmt.Sprintf("%04d-09%s/%04d-12%s", yyyy, _edtf.APPROXIMATE, yyyy, _edtf.APPROXIMATE)
+		edtf_str = fmt.Sprintf("%04d-%s09/%04d-%s12", yyyy, _edtf.APPROXIMATE, yyyy, _edtf.APPROXIMATE)
 	}
 
 	return edtf_str, nil
@@ -228,8 +228,10 @@ func EDTFStringFromDECADE(raw string) (string, error) {
 
 	edtf_str := fmt.Sprintf("%sX", str_yyy)
 
+	// because "~198X" is not a valid EDTF string
+
 	if circa != "" {
-		edtf_str = edtf_str + _edtf.APPROXIMATE
+		edtf_str = fmt.Sprintf("%s%s-01-01/%s%s-12-31", _edtf.APPROXIMATE, edtf_str, _edtf.APPROXIMATE, edtf_str)
 	}
 
 	return edtf_str, nil
@@ -250,7 +252,7 @@ func EDTFStringFromRANGE(raw string) (string, error) {
 	edtf_str := fmt.Sprintf("%s/%s", start, end)
 
 	if circa != "" {
-		edtf_str = fmt.Sprintf("%s%s/%s%s", start, _edtf.APPROXIMATE, end, _edtf.APPROXIMATE)
+		edtf_str = fmt.Sprintf("%s%s/%s%s", _edtf.APPROXIMATE, start, _edtf.APPROXIMATE, end)
 	}
 
 	return edtf_str, nil
