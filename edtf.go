@@ -303,7 +303,7 @@ func EDTFStringFromMDYHUMAN(raw string) (string, error) {
 	str_date := fmt.Sprintf("%s %s, %s", str_m, str_d, str_yyyy)
 
 	t_fmt := "Jan 2, 2006"
-	
+
 	t, err := time.Parse(t_fmt, str_date)
 
 	if err != nil {
