@@ -2,13 +2,192 @@
 
 Go package for convert SFO Museum date strings in to Extended DateTime Format (EDTF) strings and instances.
 
-## Important
+## Example
 
-This is work in progress. Documentation to follow.
+```
+package main
+
+import (
+	"flag"
+	"fmt"
+	"github.com/sfomuseum/go-sfomuseum-edtf"
+)
+
+func main() {
+
+	flag.Parse()
+
+	for _, sfom_str := range flag.Args() {
+
+		edtf_str, _ := edtf.ToEDTFString(sfom_str)
+
+		fmt.Printf("'%s' becomes '%s'\n", sfom_str, edtf_str)
+
+		edtf_date, _ := edtf.ToEDTFDate(sfom_str)
+
+		lower, _ := edtf_date.Lower()
+		upper, _ := edtf_date.Upper()
+
+		fmt.Printf("'%s' spans '%v' to '%v'\n", lower, upper)
+	}
+}
+```
+
+_Error handling removed for the sake of brevity._
+
+## Tools
+
+To build binary versions of these tools run the `cli` Makefile target. For example:
+
+```
+$> make cli
+go build -mod vendor -o bin/to-edtf cmd/to-edtf/main.go
+go build -mod vendor -o bin/to-edtf-string cmd/to-edtf-string/main.go
+```
+
+### to-edtf
+
+Parse one or more SFO Museum date strings and return a list of JSON-encode edtf.EDTFDate objects.
+
+```
+> ./bin/to-edtf -h
+Parse one or more SFO Museum date strings and return a list of JSON-encode edtf.EDTFDate objects.
+Usage:
+	 ./bin/to-edtf date(N) date(N)
+```
+
+For example:
+
+```
+$> ./bin/to-edtf 04/1972 'early 1970s'
+[
+  {
+    "start": {
+      "edtf": "1972-04",
+      "lower": {
+        "datetime": "1972-04-01T00:00:00Z",
+        "timestamp": 70934400,
+        "ymd": {
+          "year": 1972,
+          "month": 4,
+          "day": 1
+        },
+        "precision": 64
+      },
+      "upper": {
+        "datetime": "1972-04-01T23:59:59Z",
+        "timestamp": 71020799,
+        "ymd": {
+          "year": 1972,
+          "month": 4,
+          "day": 1
+        },
+        "precision": 64
+      }
+    },
+    "end": {
+      "edtf": "1972-04",
+      "lower": {
+        "datetime": "1972-04-30T00:00:00Z",
+        "timestamp": 73440000,
+        "ymd": {
+          "year": 1972,
+          "month": 4,
+          "day": 30
+        },
+        "precision": 64
+      },
+      "upper": {
+        "datetime": "1972-04-30T23:59:59Z",
+        "timestamp": 73526399,
+        "ymd": {
+          "year": 1972,
+          "month": 4,
+          "day": 30
+        },
+        "precision": 64
+      }
+    },
+    "edtf": "1972-04",
+    "level": 0,
+    "feature": "Date"
+  },
+  {
+    "start": {
+      "edtf": "1970-01",
+      "lower": {
+        "datetime": "1970-01-01T00:00:00Z",
+        "timestamp": 0,
+        "ymd": {
+          "year": 1970,
+          "month": 1,
+          "day": 1
+        },
+        "precision": 64
+      },
+      "upper": {
+        "datetime": "1970-01-31T23:59:59Z",
+        "timestamp": 2678399,
+        "ymd": {
+          "year": 1970,
+          "month": 1,
+          "day": 31
+        },
+        "precision": 64
+      }
+    },
+    "end": {
+      "edtf": "1970-04",
+      "lower": {
+        "datetime": "1970-04-01T00:00:00Z",
+        "timestamp": 7776000,
+        "ymd": {
+          "year": 1970,
+          "month": 4,
+          "day": 1
+        },
+        "precision": 64
+      },
+      "upper": {
+        "datetime": "1970-04-30T23:59:59Z",
+        "timestamp": 10367999,
+        "ymd": {
+          "year": 1970,
+          "month": 4,
+          "day": 30
+        },
+        "precision": 64
+      }
+    },
+    "edtf": "1970-01/1970-04",
+    "level": 0,
+    "feature": "Time Interval"
+  }
+]
+```
+
+### to-edtf-string
+
+Parse one or more SFO Museum date strings and return a line-separated list of valid EDTF strings.
+
+```
+> ./bin/to-edtf-string -h
+Parse one or more SFO Museum date strings and return a line-separated list of valid EDTF strings.
+Usage:
+	 ./bin/to-edtf-string date(N) date(N)
+```
+
+For example:
+
+```
+$> ./bin/to-edtf-string 04/1972 'early 1970s'
+1972-04
+1970-01/1970-04
+```
 
 ## Patterns
 
-The following date patterns are supported by this package.
+The following date patterns, used by SFO Museum, are supported by this package.
 
 ### Month/Year
 
