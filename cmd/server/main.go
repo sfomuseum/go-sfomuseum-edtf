@@ -7,6 +7,7 @@ import (
 	// "github.com/rs/cors"
 	edtf_api "github.com/sfomuseum/go-edtf-http/api"
 	"github.com/sfomuseum/go-flags/flagset"
+	sfom_api "github.com/sfomuseum/go-sfomuseum-edtf/api"
 	"log"
 	"net/http"
 	"os"
@@ -20,12 +21,15 @@ func main() {
 
 	// enable_cors := fs.Bool("enable-cors", false, "Enable CORS headers for API responses")
 
-	enable_parse_api := fs.Bool("enable-parse-api", true, "Enable the /api/parse endpoint")
-	enable_valid_api := fs.Bool("enable-valid-api", true, "Enable the /api/valid endpoint")
-	enable_matches_api := fs.Bool("enable-matches-api", true, "Enable the /api/matches endpoint")
+	enable_parse_api := fs.Bool("enable-parse-api", true, "Enable the /api/edtf/parse endpoint")
+	enable_valid_api := fs.Bool("enable-valid-api", true, "Enable the /api/edtf/valid endpoint")
+	enable_matches_api := fs.Bool("enable-matches-api", true, "Enable the /api/edtf/matches endpoint")
+
+	enable_edtf_string_api := fs.Bool("enable-edtf-string-api", true, "Enable the /api/sfomuseum/to-edtf-string endpoint")
+	enable_edtf_date_api := fs.Bool("enable-edtf-date-api", true, "Enable the /api/sfomuseum/to-edtf-date endpoint")
 
 	fs.Usage = func() {
-		fmt.Fprintf(os.Stderr, "HTTP server for exposing sfomuseum/go-edtf-http handlers.\n")
+		fmt.Fprintf(os.Stderr, "HTTP server for exposing EDTF-related API methods.\n")
 		fmt.Fprintf(os.Stderr, "Usage:\n\t %s [options]\n", os.Args[0])
 		fs.PrintDefaults()
 	}
@@ -62,7 +66,7 @@ func main() {
 			}
 		*/
 
-		mux.Handle("/api/parse", api_parse_handler)
+		mux.Handle("/api/edtf/parse", api_parse_handler)
 	}
 
 	if *enable_valid_api {
@@ -79,7 +83,7 @@ func main() {
 			}
 		*/
 
-		mux.Handle("/api/valid", api_valid_handler)
+		mux.Handle("/api/edtf/valid", api_valid_handler)
 	}
 
 	if *enable_matches_api {
@@ -96,7 +100,29 @@ func main() {
 			}
 		*/
 
-		mux.Handle("/api/matches", api_matches_handler)
+		mux.Handle("/api/edtf/matches", api_matches_handler)
+	}
+
+	if *enable_edtf_string_api {
+
+		api_string_handler, err := sfom_api.ToEDTFStringHandler()
+
+		if err != nil {
+			log.Fatalf("Failed to create api.ToEDTFString handler, %v", err)
+		}
+
+		mux.Handle("/api/sfomuseum/to-edtf-string", api_string_handler)
+	}
+
+	if *enable_edtf_date_api {
+
+		api_date_handler, err := sfom_api.ToEDTFDateHandler()
+
+		if err != nil {
+			log.Fatalf("Failed to create api.ToEDTFDate handler, %v", err)
+		}
+
+		mux.Handle("/api/sfomuseum/to-edtf-date", api_date_handler)
 	}
 
 	log.Printf("Listening on %s", s.Address())

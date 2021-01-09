@@ -45,6 +45,86 @@ go build -mod vendor -o bin/to-edtf cmd/to-edtf/main.go
 go build -mod vendor -o bin/to-edtf-string cmd/to-edtf-string/main.go
 ```
 
+### server
+
+HTTP server for exposing EDTF-related API methods.
+
+```
+> ./bin/server -h
+HTTP server for exposing EDTF-related API methods.
+Usage:
+	 ./bin/server [options]
+  -enable-edtf-date-api
+    	Enable the /api/sfomuseum/to-edtf-date endpoint (default true)
+  -enable-edtf-string-api
+    	Enable the /api/sfomuseum/to-edtf-string endpoint (default true)
+  -enable-matches-api
+    	Enable the /api/edtf/matches endpoint (default true)
+  -enable-parse-api
+    	Enable the /api/edtf/parse endpoint (default true)
+  -enable-valid-api
+    	Enable the /api/edtf/valid endpoint (default true)
+  -server-uri string
+    	A valid aaronland/go-http-server URI. (default "http://localhost:8080")
+```
+
+For example:
+
+```
+$> curl -s 'http://localhost:8080/api/sfomuseum/to-edtf-date?date=1950s' | jq
+{
+  "start": {
+    "edtf": "195X",
+    "lower": {
+      "datetime": "1950-01-01T00:00:00Z",
+      "timestamp": -631152000,
+      "ymd": {
+        "year": 1950,
+        "month": 1,
+        "day": 1
+      },
+      "precision": 128
+    },
+    "upper": {
+      "datetime": "1950-01-01T23:59:59Z",
+      "timestamp": -631065601,
+      "ymd": {
+        "year": 1950,
+        "month": 1,
+        "day": 1
+      },
+      "precision": 128
+    }
+  },
+  "end": {
+    "edtf": "195X",
+    "lower": {
+      "datetime": "1959-12-31T00:00:00Z",
+      "timestamp": -315705600,
+      "ymd": {
+        "year": 1959,
+        "month": 12,
+        "day": 31
+      },
+      "precision": 128
+    },
+    "upper": {
+      "datetime": "1959-12-31T23:59:59Z",
+      "timestamp": -315619201,
+      "ymd": {
+        "year": 1959,
+        "month": 12,
+        "day": 31
+      },
+      "precision": 128
+    }
+  },
+  "edtf": "195X",
+  "level": 1,
+  "feature": "Unspecified digit(s) from the right"
+}
+```
+
 ### to-edtf
 
 Parse one or more SFO Museum date strings and return a list of JSON-encode edtf.EDTFDate objects.
@@ -260,3 +340,4 @@ The following date patterns, used by SFO Museum, are supported by this package.
 ## See also
 
 * https://github.com/sfomuseum/go-edtf
+* https://github.com/aaronland/go-http-server
