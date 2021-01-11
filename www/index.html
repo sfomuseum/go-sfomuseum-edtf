@@ -3,11 +3,28 @@
     <meta charset="utf-8" />
     <title>EDTF Parser</title>
     <script src="javascript/index.js"></script>
+    <script src="javascript/index.init.js"></script>
+    <script src="javascript/sfomuseum.date.js"></script>        
     <link rel="stylesheet" type="text/css" href="css/index.css" />
   </head>
 
   <body>
-      <h1>SFO Museum Date Tool</h1>
+      <div class="container">
+	  
+	  <h1>SFO Museum Date Converter Tool</h1>
+	  
+	  <div class="row">
+	      <input type="text" name="date" id="date" placeholder="Enter a date string here" />
+	      <button class="btn btn-primary" disabled id="submit" type="submit">Convert</button>
+	  </div>
+
+	  <div class="row" id="edtf_str">
+	  </div>
+
+	  <div class="row" id="edtf_date">
+	  </div>
+	  
+      </div>
       
   </body>
 </html>

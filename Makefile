@@ -10,3 +10,7 @@ cli:
 	$(GO) build -mod vendor -o bin/to-edtf cmd/to-edtf/main.go
 	$(GO) build -mod vendor -o bin/to-edtf-string cmd/to-edtf-string/main.go
 	$(GO) build -mod vendor -o bin/server cmd/server/main.go
+
+server:
+	$(GO) build -mod vendor -o bin/server cmd/server/main.go
+	bin/server
