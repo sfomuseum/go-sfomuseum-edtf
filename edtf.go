@@ -358,6 +358,5 @@ func EDTFStringFromMDYHUMAN(raw string) (string, error) {
 	}
 
 	edtf_str := t.Format("2006-01-02")
-
 	return edtf_str, nil
 }
