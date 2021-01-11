@@ -13,6 +13,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
+	"strings"
 )
 
 func main() {
@@ -23,14 +25,24 @@ func main() {
 
 	// enable_cors := fs.Bool("enable-cors", false, "Enable CORS headers for API responses")
 
-	enable_parse_api := fs.Bool("enable-parse-api", true, "Enable the /api/edtf/parse endpoint")
-	enable_valid_api := fs.Bool("enable-valid-api", true, "Enable the /api/edtf/valid endpoint")
-	enable_matches_api := fs.Bool("enable-matches-api", true, "Enable the /api/edtf/matches endpoint")
+	enable_parse_api := fs.Bool("enable-parse-api", true, "Enable the EDTF parse API endpoint")
+	enable_valid_api := fs.Bool("enable-valid-api", true, "Enable the EDTF valid API endpoint")
+	enable_matches_api := fs.Bool("enable-matches-api", true, "Enable the EDTF matches API endpoint")
 
-	enable_edtf_string_api := fs.Bool("enable-edtf-string-api", true, "Enable the /api/sfomuseum/to-edtf-string endpoint")
-	enable_edtf_date_api := fs.Bool("enable-edtf-date-api", true, "Enable the /api/sfomuseum/to-edtf-date endpoint")
+	enable_edtf_string_api := fs.Bool("enable-edtf-string-api", true, "Enable the SFO Museum to-edtf-string API endpoint")
+	enable_edtf_date_api := fs.Bool("enable-edtf-date-api", true, "Enable the SFO Museum to-edtf-date API endpoint")
 
-	enable_www := fs.Bool("enable-www", true, "Enable the user-facing web interface")
+	enable_www := fs.Bool("enable-www", true, "Enable the user-facing web application.")
+
+	path_parse_api := fs.String("path-parse-api", "/api/edtf/parse", "The path to listen for requests to the EDTF parse API on.")
+	path_valid_api := fs.String("path-valid-api", "/api/edtf/valid", "The path to listen for requests to the EDTF valid API on.")
+	path_matches_api := fs.String("path-matches-api", "/api/edtf/matches", "The path to listen for requests to the EDTF matches API on.")
+	path_edtf_string_api := fs.String("path-edtf-string-api", "/api/sfomuseum/to-edtf-string", "The path to listen for requests to the SFO Museum to-edtf-string API on.")
+	path_edtf_date_api := fs.String("path-edtf-date-api", "/api/sfomuseum/to-edtf-date", "The path to listen for requests to the SFO Museum to-edtf-date API on.")
+
+	path_www := fs.String("path-www", "/", "The path to listen for requests to the user-facing web application on.")
+
+	path_prefix := fs.String("path-prefix", "", "A relative path to append to all the paths the server will listen for requests on.")
 
 	fs.Usage = func() {
 		fmt.Fprintf(os.Stderr, "HTTP server for exposing EDTF-related API methods.\n")
@@ -46,6 +58,18 @@ func main() {
 		log.Fatalf("Failed to set flags from environment variables, %v", err)
 	}
 
+	if *path_prefix != "" {
+
+		log.Println("HELLO")
+
+		*path_parse_api = filepath.Join(*path_prefix, *path_parse_api)
+		*path_valid_api = filepath.Join(*path_prefix, *path_valid_api)
+		*path_matches_api = filepath.Join(*path_prefix, *path_matches_api)
+		*path_edtf_string_api = filepath.Join(*path_prefix, *path_edtf_string_api)
+		*path_edtf_date_api = filepath.Join(*path_prefix, *path_edtf_date_api)
+		*path_www = filepath.Join(*path_prefix, *path_www)
+	}
+
 	ctx := context.Background()
 
 	s, err := server.NewServer(ctx, *server_uri)
@@ -58,7 +82,7 @@ func main() {
 
 	if *enable_www {
 
-		err := bootstrap.AppendAssetHandlers(mux)
+		err := bootstrap.AppendAssetHandlersWithPrefix(mux, *path_prefix)
 
 		if err != nil {
 			log.Fatalf("Failed to append Bootstrap asset handlers, %v", err)
@@ -70,10 +94,19 @@ func main() {
 			log.Fatalf("Failed to create WWW index handler, %v", err)
 		}
 
-		bootstrap_opts := bootstrap.DefaultBootstrapOptions()
-		index_handler = bootstrap.AppendResourcesHandler(index_handler, bootstrap_opts)
+		if *path_prefix != "" {
 
-		mux.Handle("/", index_handler)
+			index_handler = http.StripPrefix(*path_prefix, index_handler)
+
+			if !strings.HasSuffix(*path_www, "/") {
+				*path_www = fmt.Sprintf("%s/", *path_www)
+			}
+		}
+
+		bootstrap_opts := bootstrap.DefaultBootstrapOptions()
+		index_handler = bootstrap.AppendResourcesHandlerWithPrefix(index_handler, bootstrap_opts, *path_prefix)
+
+		mux.Handle(*path_www, index_handler)
 	}
 
 	if *enable_parse_api {
@@ -90,7 +123,7 @@ func main() {
 			}
 		*/
 
-		mux.Handle("/api/edtf/parse", api_parse_handler)
+		mux.Handle(*path_parse_api, api_parse_handler)
 	}
 
 	if *enable_valid_api {
@@ -107,7 +140,7 @@ func main() {
 			}
 		*/
 
-		mux.Handle("/api/edtf/valid", api_valid_handler)
+		mux.Handle(*path_valid_api, api_valid_handler)
 	}
 
 	if *enable_matches_api {
@@ -124,7 +157,7 @@ func main() {
 			}
 		*/
 
-		mux.Handle("/api/edtf/matches", api_matches_handler)
+		mux.Handle(*path_matches_api, api_matches_handler)
 	}
 
 	if *enable_edtf_string_api {
@@ -135,7 +168,7 @@ func main() {
 			log.Fatalf("Failed to create api.ToEDTFString handler, %v", err)
 		}
 
-		mux.Handle("/api/sfomuseum/to-edtf-string", api_string_handler)
+		mux.Handle(*path_edtf_string_api, api_string_handler)
 	}
 
 	if *enable_edtf_date_api {
@@ -146,7 +179,7 @@ func main() {
 			log.Fatalf("Failed to create api.ToEDTFDate handler, %v", err)
 		}
 
-		mux.Handle("/api/sfomuseum/to-edtf-date", api_date_handler)
+		mux.Handle(*path_edtf_date_api, api_date_handler)
 	}
 
 	log.Printf("Listening on %s", s.Address())
