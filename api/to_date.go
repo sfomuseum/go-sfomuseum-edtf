@@ -29,7 +29,7 @@ func ToEDTFDateHandler() (http.HandlerFunc, error) {
 			http.Error(rsp, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		
+
 		rsp.Header().Set("Content-Type", "application/json")
 
 		enc := json.NewEncoder(rsp)

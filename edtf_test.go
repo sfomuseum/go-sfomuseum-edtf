@@ -7,6 +7,7 @@ import (
 var tests = map[string]map[string]string{
 	"MY": map[string]string{
 		"04/1972":   "1972-04",
+		"03/-1980":  "-1980-03",
 		"c. 3/1984": "1984-03~",
 	},
 	"MDY": map[string]string{
@@ -17,6 +18,7 @@ var tests = map[string]map[string]string{
 		"early 1970s":    "1970-01/1970-04",
 		"c. early 1950s": "1950-~01/1950-~04",
 		"Early 1960s":    "1960-01/1960-04",
+		"Early -0200s":   "-0200-01/-0200-04",
 	},
 	"MID": map[string]string{
 		"mid 1970s":    "1970-05/1970-08",

@@ -154,13 +154,7 @@ func EDTFStringFromEARLY(raw string) (string, error) {
 		return "", errors.Invalid()
 	}
 
-	edtf_str := fmt.Sprintf("%04d-01/%04d-04", yyyy, yyyy)
-
-	if circa != "" {
-		edtf_str = fmt.Sprintf("%04d-%s01/%04d-%s04", yyyy, _edtf.APPROXIMATE, yyyy, _edtf.APPROXIMATE)
-	}
-
-	return edtf_str, nil
+	return formatWithSemestral(yyyy, 1, 4, circa)
 }
 
 func EDTFStringFromMID(raw string) (string, error) {
@@ -180,13 +174,7 @@ func EDTFStringFromMID(raw string) (string, error) {
 		return "", errors.Invalid()
 	}
 
-	edtf_str := fmt.Sprintf("%04d-05/%04d-08", yyyy, yyyy)
-
-	if circa != "" {
-		edtf_str = fmt.Sprintf("%04d-%s05/%04d-%s08", yyyy, _edtf.APPROXIMATE, yyyy, _edtf.APPROXIMATE)
-	}
-
-	return edtf_str, nil
+	return formatWithSemestral(yyyy, 5, 8, circa)
 }
 
 func EDTFStringFromLATE(raw string) (string, error) {
@@ -206,10 +194,28 @@ func EDTFStringFromLATE(raw string) (string, error) {
 		return "", errors.Invalid()
 	}
 
-	edtf_str := fmt.Sprintf("%04d-09/%04d-12", yyyy, yyyy)
+	return formatWithSemestral(yyyy, 9, 12, circa)
+}
+
+func formatWithSemestral(yyyy int, start int, end int, circa string) (string, error) {
+
+	layout := "%04d-%02d/%04d-%02d"
+
+	if yyyy < 0 {
+		layout = "%05d-%02d/%05d-%02d"
+	}
+
+	edtf_str := fmt.Sprintf(layout, yyyy, start, yyyy, end)
 
 	if circa != "" {
-		edtf_str = fmt.Sprintf("%04d-%s09/%04d-%s12", yyyy, _edtf.APPROXIMATE, yyyy, _edtf.APPROXIMATE)
+
+		layout = "%04d-%s%02d/%04d-%s%02d"
+
+		if yyyy < 0 {
+			layout = "%05d-%s%02d/%05d-%s%02d"
+		}
+
+		edtf_str = fmt.Sprintf(layout, yyyy, _edtf.APPROXIMATE, start, yyyy, _edtf.APPROXIMATE, end)
 	}
 
 	return edtf_str, nil
