@@ -14,3 +14,13 @@ cli:
 server:
 	$(GO) build -mod vendor -o bin/server cmd/server/main.go
 	bin/server
+
+lambda:
+	@make lambda-server
+
+lambda-server:
+	if test -f main; then rm -f main; fi
+	if test -f server.zip; then rm -f server.zip; fi
+	GOOS=linux $(GO) build -mod vendor -o main cmd/server/main.go
+	zip server.zip main
+	rm -f main
