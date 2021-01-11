@@ -3,6 +3,7 @@ package edtf
 import (
 	"fmt"
 	_edtf "github.com/sfomuseum/go-edtf"
+	"github.com/sfomuseum/go-edtf/common"
 	"github.com/sfomuseum/go-edtf/parser"
 	"github.com/sfomuseum/go-sfomuseum-edtf/errors"
 	"github.com/sfomuseum/go-sfomuseum-edtf/re"
@@ -86,7 +87,13 @@ func EDTFStringFromMY(raw string) (string, error) {
 		return "", errors.Invalid()
 	}
 
-	edtf_str := fmt.Sprintf("%04d-%02d", yyyy, mm)
+	layout := "%04d-%02d"
+
+	if yyyy < 0 {
+		layout = "%05d-%02d"
+	}
+
+	edtf_str := fmt.Sprintf(layout, yyyy, mm)
 
 	if circa != "" {
 		edtf_str = edtf_str + _edtf.APPROXIMATE
@@ -127,7 +134,13 @@ func EDTFStringFromMDY(raw string) (string, error) {
 		return "", errors.Invalid()
 	}
 
-	edtf_str := fmt.Sprintf("%04d-%02d-%02d", yyyy, mm, dd)
+	layout := "%04d-%02d-%02d"
+
+	if yyyy < 0 {
+		layout = "%05d-%02d-%02d"
+	}
+
+	edtf_str := fmt.Sprintf(layout, yyyy, mm, dd)
 
 	if circa != "" {
 
@@ -283,7 +296,13 @@ func EDTFStringFromYYYY(raw string) (string, error) {
 		return "", errors.Invalid()
 	}
 
-	edtf_str := fmt.Sprintf("%04d", yyyy)
+	layout := "%04d"
+
+	if yyyy < 0 {
+		layout = "%05d"
+	}
+
+	edtf_str := fmt.Sprintf(layout, yyyy)
 
 	if before != "" {
 		edtf_str = fmt.Sprintf("%s/%s", _edtf.UNKNOWN, edtf_str)
@@ -308,7 +327,23 @@ func EDTFStringFromMDYHUMAN(raw string) (string, error) {
 	str_d := m[2]
 	str_yyyy := m[3]
 
-	str_date := fmt.Sprintf("%s %s, %s", str_m, str_d, str_yyyy)
+	yyyy, err := strconv.Atoi(str_yyyy)
+
+	if err != nil {
+		return "", errors.Invalid()
+	}
+
+	is_bce := false
+
+	if yyyy < 0 {
+		is_bce = true
+	}
+
+	if is_bce {
+		yyyy = common.FlipYear(yyyy)
+	}
+
+	str_date := fmt.Sprintf("%s %s, %04d", str_m, str_d, yyyy)
 
 	t_fmt := "Jan 2, 2006"
 
@@ -316,6 +351,10 @@ func EDTFStringFromMDYHUMAN(raw string) (string, error) {
 
 	if err != nil {
 		return "", err
+	}
+
+	if is_bce {
+		t = common.TimeToBCE(t)
 	}
 
 	edtf_str := t.Format("2006-01-02")
