@@ -50,7 +50,7 @@ go build -mod vendor -o bin/to-edtf-string cmd/to-edtf-string/main.go
 HTTP server for exposing EDTF-related API methods.
 
 ```
-> ./bin/server -h
+$> ./bin/server -h
 HTTP server for exposing EDTF-related API methods.
 Usage:
 	 ./bin/server [options]
@@ -64,11 +64,24 @@ Usage:
     	Enable the /api/edtf/parse endpoint (default true)
   -enable-valid-api
     	Enable the /api/edtf/valid endpoint (default true)
+  -enable-www
+    	Enable the user-facing web interface (default true)
   -server-uri string
     	A valid aaronland/go-http-server URI. (default "http://localhost:8080")
 ```
 
 For example:
+
+```
+$> ./bin/server 
+2021/01/11 14:00:13 Listening on http://localhost:8080
+```
+
+And then if you visit `http://localhost:8080` in your web browser you would see a simple web application like this:
+
+![](docs/images/Downloads/sfom_edtf_converter.png)
+
+You can also invoke the individual API endpoints from the command line. For example:
 
 ```
 $> curl -s 'http://localhost:8080/api/sfomuseum/to-edtf-date?date=1950s' | jq
@@ -124,6 +137,30 @@ $> curl -s 'http://localhost:8080/api/sfomuseum/to-edtf-date?date=1950s' | jq
   "feature": "Unspecified digit(s) from the right"
 }
 ```
+
+#### Lambda
+
+_This documentation is incomplete._
+
+```
+$> make lambda-server
+if test -f main; then rm -f main; fi
+if test -f server.zip; then rm -f server.zip; fi
+GOOS=linux ~/src/go/bin/go build -mod vendor -o main cmd/server/main.go
+zip server.zip main
+  adding: main (deflated 45%)
+rm -f main
+```
+
+##### Environment Variables
+
+| Name | Value | Notes |
+| --- | --- | --- |
+| EDTF_SERVER_URI | `lambda://` | |
+
+#### API Gateway
+
+_This documentation is incomplete._
 
 ### to-edtf
 
