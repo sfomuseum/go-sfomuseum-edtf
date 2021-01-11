@@ -1,6 +1,6 @@
 module github.com/sfomuseum/go-sfomuseum-edtf
 
-go 1.12
+go 1.16
 
 require (
 	github.com/aaronland/go-http-sanitize v0.0.4

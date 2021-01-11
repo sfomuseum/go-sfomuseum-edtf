@@ -1,6 +1,8 @@
 # github.com/aaronland/go-http-sanitize v0.0.4
+## explicit
 github.com/aaronland/go-http-sanitize
 # github.com/aaronland/go-http-server v0.0.5
+## explicit
 github.com/aaronland/go-http-server
 # github.com/aaronland/go-roster v0.0.2
 github.com/aaronland/go-roster
@@ -11,6 +13,7 @@ github.com/aws/aws-lambda-go/lambda/handlertrace
 github.com/aws/aws-lambda-go/lambda/messages
 github.com/aws/aws-lambda-go/lambdacontext
 # github.com/sfomuseum/go-edtf v0.2.0
+## explicit
 github.com/sfomuseum/go-edtf
 github.com/sfomuseum/go-edtf/calendar
 github.com/sfomuseum/go-edtf/common
@@ -21,8 +24,10 @@ github.com/sfomuseum/go-edtf/parser
 github.com/sfomuseum/go-edtf/re
 github.com/sfomuseum/go-edtf/tests
 # github.com/sfomuseum/go-edtf-http v0.0.0-20210109010542-0c4c6271afa3
+## explicit
 github.com/sfomuseum/go-edtf-http/api
 # github.com/sfomuseum/go-flags v0.5.0
+## explicit
 github.com/sfomuseum/go-flags/flagset
 # github.com/whosonfirst/algnhsa v0.1.0
 github.com/whosonfirst/algnhsa
