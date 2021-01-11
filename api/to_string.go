@@ -25,6 +25,11 @@ func ToEDTFStringHandler() (http.HandlerFunc, error) {
 
 		edtf_str, err := edtf.ToEDTFString(date_str)
 
+		if err != nil {
+			http.Error(rsp, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		
 		rsp.Header().Set("Content-Type", "application/json")
 
 		enc := json.NewEncoder(rsp)
