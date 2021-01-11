@@ -4,10 +4,12 @@ import (
 	"context"
 	"fmt"
 	"github.com/aaronland/go-http-server"
+	"github.com/aaronland/go-http-bootstrap"	
 	// "github.com/rs/cors"
 	edtf_api "github.com/sfomuseum/go-edtf-http/api"
 	"github.com/sfomuseum/go-flags/flagset"
 	sfom_api "github.com/sfomuseum/go-sfomuseum-edtf/api"
+	sfom_www "github.com/sfomuseum/go-sfomuseum-edtf/www"	
 	"log"
 	"net/http"
 	"os"
@@ -28,6 +30,8 @@ func main() {
 	enable_edtf_string_api := fs.Bool("enable-edtf-string-api", true, "Enable the /api/sfomuseum/to-edtf-string endpoint")
 	enable_edtf_date_api := fs.Bool("enable-edtf-date-api", true, "Enable the /api/sfomuseum/to-edtf-date endpoint")
 
+	enable_www := fs.Bool("enable-www", true, "Enable the user-facing web interface")
+	
 	fs.Usage = func() {
 		fmt.Fprintf(os.Stderr, "HTTP server for exposing EDTF-related API methods.\n")
 		fmt.Fprintf(os.Stderr, "Usage:\n\t %s [options]\n", os.Args[0])
@@ -52,12 +56,32 @@ func main() {
 
 	mux := http.NewServeMux()
 
+	if *enable_www {
+
+		err := bootstrap.AppendAssetHandlers(mux)
+
+		if err != nil {
+			log.Fatalf("Failed to append Bootstrap asset handlers, %v", err)
+		}
+		
+		index_handler, err := sfom_www.IndexHandler()
+
+		if err != nil {
+			log.Fatalf("Failed to create WWW index handler, %v", err)
+		}
+
+		bootstrap_opts := bootstrap.DefaultBootstrapOptions()
+		index_handler = bootstrap.AppendResourcesHandler(index_handler, bootstrap_opts)
+		
+		mux.Handle("/", index_handler)		
+	}
+	
 	if *enable_parse_api {
 
 		api_parse_handler, err := edtf_api.ParseHandler()
 
 		if err != nil {
-			log.Fatalf("Failed to API parse handler, %v", err)
+			log.Fatalf("Failed to create API parse handler, %v", err)
 		}
 
 		/*
@@ -74,7 +98,7 @@ func main() {
 		api_valid_handler, err := edtf_api.IsValidHandler()
 
 		if err != nil {
-			log.Fatalf("Failed to API is valid handler, %v", err)
+			log.Fatalf("Failed to create API is valid handler, %v", err)
 		}
 
 		/*
@@ -91,7 +115,7 @@ func main() {
 		api_matches_handler, err := edtf_api.MatchesHandler()
 
 		if err != nil {
-			log.Fatalf("Failed to API is matches handler, %v", err)
+			log.Fatalf("Failed to create API is matches handler, %v", err)
 		}
 
 		/*

@@ -10,7 +10,7 @@ import (
 //go:embed css
 var web_app embed.FS
 
-func IndexHandler() (http.HandlerFunc, error) {
+func IndexHandler() (http.Handler, error) {
 
 	http_fs := http.FS(web_app)
 	fs_handler := http.FileServer(http_fs)
