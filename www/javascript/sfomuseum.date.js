@@ -72,8 +72,14 @@ sfomuseum.date = (function(){
 
 		var status_code = target['status'];
 		var status_text = target['statusText'];
-		
+
 		var raw = target['responseText'];
+		
+		if (status_code != 200){
+		    dothis_onerror(target['responseText']);
+		    return false;
+		}
+		
 		var data = undefined;
 
 		try {

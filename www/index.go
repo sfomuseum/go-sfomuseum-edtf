@@ -1,8 +1,8 @@
 package www
 
 import (
-	"net/http"
 	"embed"
+	"net/http"
 )
 
 //go:embed index.html

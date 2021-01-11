@@ -3,13 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/aaronland/go-http-bootstrap"
 	"github.com/aaronland/go-http-server"
-	"github.com/aaronland/go-http-bootstrap"	
 	// "github.com/rs/cors"
 	edtf_api "github.com/sfomuseum/go-edtf-http/api"
 	"github.com/sfomuseum/go-flags/flagset"
 	sfom_api "github.com/sfomuseum/go-sfomuseum-edtf/api"
-	sfom_www "github.com/sfomuseum/go-sfomuseum-edtf/www"	
+	sfom_www "github.com/sfomuseum/go-sfomuseum-edtf/www"
 	"log"
 	"net/http"
 	"os"
@@ -31,7 +31,7 @@ func main() {
 	enable_edtf_date_api := fs.Bool("enable-edtf-date-api", true, "Enable the /api/sfomuseum/to-edtf-date endpoint")
 
 	enable_www := fs.Bool("enable-www", true, "Enable the user-facing web interface")
-	
+
 	fs.Usage = func() {
 		fmt.Fprintf(os.Stderr, "HTTP server for exposing EDTF-related API methods.\n")
 		fmt.Fprintf(os.Stderr, "Usage:\n\t %s [options]\n", os.Args[0])
@@ -63,7 +63,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("Failed to append Bootstrap asset handlers, %v", err)
 		}
-		
+
 		index_handler, err := sfom_www.IndexHandler()
 
 		if err != nil {
@@ -72,10 +72,10 @@ func main() {
 
 		bootstrap_opts := bootstrap.DefaultBootstrapOptions()
 		index_handler = bootstrap.AppendResourcesHandler(index_handler, bootstrap_opts)
-		
-		mux.Handle("/", index_handler)		
+
+		mux.Handle("/", index_handler)
 	}
-	
+
 	if *enable_parse_api {
 
 		api_parse_handler, err := edtf_api.ParseHandler()
