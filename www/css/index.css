@@ -1,3 +1,13 @@
-body {
+#edtf_string_block {
+	display:none;
+}
 
-	}
+#edtf_date_block {
+	display:none;
+}
+
+pre {
+	border: solid thin;
+	padding:1rem;
+	background-color:#ededed;
+}

@@ -14,14 +14,21 @@
 	  <h1>SFO Museum Date Converter Tool</h1>
 	  
 	  <div class="row">
-	      <input type="text" name="date" id="date" placeholder="Enter a date string here" />
-	      <button class="btn btn-primary" disabled id="submit" type="submit">Convert</button>
+	      <h2>SFO Museum Date</h2>
+	      <div>
+		  <input type="text" name="date" id="date" placeholder="Enter a date string here" />
+		  <button class="btn btn-primary" disabled id="submit" type="submit">Convert</button>
+	      </div>	      
 	  </div>
 
-	  <div class="row" id="edtf_str">
+	  <div class="row" id="edtf_string_block">
+	      <h2>Extended DateTime Format String</h2>
+	      <pre id="edtf_string"></pre>
 	  </div>
 
-	  <div class="row" id="edtf_date">
+	  <div class="row" id="edtf_date_block">
+	      <h2>Extended DateTime Format Date</h2>
+	      <pre id="edtf_date"></pre>
 	  </div>
 	  
       </div>

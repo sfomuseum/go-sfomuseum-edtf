@@ -8,7 +8,6 @@ window.addEventListener("load", function load(event){
     }
 
     submit_button.onclick = function(){
-	console.log("CLICK");
 
 	var date_el = document.getElementById("date");
 
@@ -27,6 +26,8 @@ window.addEventListener("load", function load(event){
 	console.log("PARSE", date_str);
 	
 	to_edtf_string(date_str);
+	to_edtf_date(date_str);
+	
 	return false;
     };
 
