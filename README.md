@@ -2,6 +2,15 @@
 
 Go package for convert SFO Museum date strings in to Extended DateTime Format (EDTF) strings and instances.
 
+## Important
+
+This package is target at SFO Museum-specific uses. While it may expose functionality that is useful to another organization or project that is not its primary goal. It is provided "as-is" in a spirit of sharing and generousity.
+
+If you need to customized or bespoke functionality for working with EDTF strings then you should have a look at the packages that this package builds upon:
+
+* https://github.com/sfomuseum/go-edtf
+* https://github.com/sfomuseum/go-edtf-http
+
 ## Example
 
 ```
@@ -79,7 +88,7 @@ $> ./bin/server
 
 And then if you visit `http://localhost:8080` in your web browser you would see a simple web application like this:
 
-![](docs/images/Downloads/sfom_edtf_converter.png)
+![](docs/images/sfom_edtf_converter.png)
 
 You can also invoke the individual API endpoints from the command line. For example:
 
