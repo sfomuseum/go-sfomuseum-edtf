@@ -32,7 +32,7 @@ sfomuseum.date = (function(){
 	    };
 	    
 	    var dothis_onerror = function(rsp){
-			
+
 		if (on_error){
 		    on_error(rsp);
 		}
@@ -49,8 +49,6 @@ sfomuseum.date = (function(){
 	    
 	    url = url + "?" + params.toString();
 	    
-	    console.log("CALL", url);
-
 	    /*
 	    var form_data = data;
 
@@ -87,6 +85,11 @@ sfomuseum.date = (function(){
 		    return false;
 		}
 
+		if (! data){
+		    dothis_onerror("Missing EDTF data");
+		    return false;
+		}
+		
 		dothis_onsuccess(data);
 		return true;
 	    };

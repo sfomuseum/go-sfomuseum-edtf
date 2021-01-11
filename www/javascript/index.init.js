@@ -23,7 +23,9 @@ window.addEventListener("load", function load(event){
 	    return false;
 	}
 
-	console.log("PARSE", date_str);
+	var feedback = document.getElementById("feedback");
+	feedback.style.display = "none";	
+	feedback.innerHTML = "";
 	
 	to_edtf_string(date_str);
 	to_edtf_date(date_str);

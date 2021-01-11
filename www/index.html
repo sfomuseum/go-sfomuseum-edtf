@@ -10,15 +10,20 @@
 
   <body>
       <div class="container">
-	  
-	  <h1>SFO Museum Date Converter Tool</h1>
-	  
+
 	  <div class="row">
-	      <h2>SFO Museum Date</h2>
-	      <div>
-		  <input type="text" name="date" id="date" placeholder="Enter a date string here" />
-		  <button class="btn btn-primary" disabled id="submit" type="submit">Convert</button>
-	      </div>	      
+	      <h1>SFO Museum Date Converter Tool</h1>
+	      <ul id="feedback"></ul>
+	  </div>
+	  
+	  <div class="row" id="sfom_date_block">
+	      <form>
+		  <div class="form-group">
+		      <label for="date">SFO Museum Date</label>
+		      <input type="text" name="date" id="date" placeholder="Enter a date string here" />
+		      <button class="btn btn-primary" disabled id="submit" type="submit">Convert</button>
+		  </div>
+	      </form>
 	  </div>
 
 	  <div class="row" id="edtf_string_block">
