@@ -18,7 +18,7 @@ github.com/aws/aws-lambda-go/lambda
 github.com/aws/aws-lambda-go/lambda/handlertrace
 github.com/aws/aws-lambda-go/lambda/messages
 github.com/aws/aws-lambda-go/lambdacontext
-# github.com/sfomuseum/go-edtf v0.2.0
+# github.com/sfomuseum/go-edtf v0.2.1
 ## explicit
 github.com/sfomuseum/go-edtf
 github.com/sfomuseum/go-edtf/calendar
@@ -29,7 +29,7 @@ github.com/sfomuseum/go-edtf/level2
 github.com/sfomuseum/go-edtf/parser
 github.com/sfomuseum/go-edtf/re
 github.com/sfomuseum/go-edtf/tests
-# github.com/sfomuseum/go-edtf-http v0.0.0-20210109010542-0c4c6271afa3
+# github.com/sfomuseum/go-edtf-http v0.0.1
 ## explicit
 github.com/sfomuseum/go-edtf-http/api
 # github.com/sfomuseum/go-flags v0.5.0
