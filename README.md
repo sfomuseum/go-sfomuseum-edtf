@@ -241,7 +241,7 @@ $> curl -s 'http://localhost:8080/api/sfomuseum/to-edtf-date?date=1950s' | jq
 
 #### Notes
 
-* Although it is possible to assign custom paths for API endpoints it is not yet possible to relay that information down to the Javascript files that invoke those endpoints. To that end custom API paths shouldn't be considered ready to use at this time.
+* Although it is possible to assign custom paths for API endpoints it is not yet possible to relay that information down to the Javascript files that invoke those endpoints. To that end custom API paths shouldn't be considered [ready to use at this time](https://github.com/sfomuseum/go-sfomuseum-edtf/issues/1).
 
 #### AWS
 
