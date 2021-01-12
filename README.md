@@ -2,6 +2,15 @@
 
 Go package for convert SFO Museum date strings in to Extended DateTime Format (EDTF) strings and instances.
 
+## Important
+
+This package is built with SFO Museum-specific uses in mind. While it may expose functionality that is useful to another organization or project that is not its primary goal. It is provided "as-is" in a spirit of sharing and generousity.
+
+If you need to customized or bespoke functionality for working with EDTF strings then you should have a look at the packages that this package builds upon:
+
+* https://github.com/sfomuseum/go-edtf
+* https://github.com/sfomuseum/go-edtf-http
+
 ## Example
 
 ```
