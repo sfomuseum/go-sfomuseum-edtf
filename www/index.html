@@ -1,11 +1,11 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>EDTF Parser</title>
-    <script src="javascript/index.js"></script>
-    <script src="javascript/index.init.js"></script>
-    <script src="javascript/sfomuseum.date.js"></script>        
-    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <title>SFO Museum Date Converter Tool</title>
+    <script src="static/javascript/index.js"></script>
+    <script src="static/javascript/index.init.js"></script>
+    <script src="static/javascript/sfomuseum.date.js"></script>        
+    <link rel="stylesheet" type="text/css" href="static/css/index.css" />
   </head>
 
   <body>
@@ -22,6 +22,7 @@
 		      <label for="date">SFO Museum Date</label>
 		      <input type="text" name="date" id="date" placeholder="Enter a date string here" />
 		      <button class="btn btn-primary" disabled id="submit" type="submit">Convert</button>
+		      <small id="data-help" class="form-text text-muted">The list of supported date patterns <a href="https://github.com/sfomuseum/go-sfomuseum-edtf#patterns" target="patterns">is available here</a>.</small>
 		  </div>
 	      </form>
 	  </div>

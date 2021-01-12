@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/aaronland/go-http-bootstrap"
 	"github.com/aaronland/go-http-server"
-	// "github.com/rs/cors"
 	edtf_api "github.com/sfomuseum/go-edtf-http/api"
 	"github.com/sfomuseum/go-flags/flagset"
 	sfom_api "github.com/sfomuseum/go-sfomuseum-edtf/api"
@@ -14,7 +13,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 func main() {
@@ -22,8 +20,6 @@ func main() {
 	fs := flagset.NewFlagSet("server")
 
 	server_uri := fs.String("server-uri", "http://localhost:8080", "A valid aaronland/go-http-server URI.")
-
-	// enable_cors := fs.Bool("enable-cors", false, "Enable CORS headers for API responses")
 
 	enable_parse_api := fs.Bool("enable-parse-api", true, "Enable the EDTF parse API endpoint")
 	enable_valid_api := fs.Bool("enable-valid-api", true, "Enable the EDTF valid API endpoint")
@@ -41,8 +37,9 @@ func main() {
 	path_edtf_date_api := fs.String("path-edtf-date-api", "/api/sfomuseum/to-edtf-date", "The path to listen for requests to the SFO Museum to-edtf-date API on.")
 
 	path_www := fs.String("path-www", "/", "The path to listen for requests to the user-facing web application on.")
+	path_static := fs.String("path-static", "/static", "The path to listen for requests to the user-facing web application on.")
 
-	path_prefix := fs.String("path-prefix", "", "A relative path to append to all the paths the server will listen for requests on.")
+	bootstrap_prefix := fs.String("bootstrap-prefix", "", "A relative path to append to all Bootstrap-related paths the server will listen for requests on.")
 
 	fs.Usage = func() {
 		fmt.Fprintf(os.Stderr, "HTTP server for exposing EDTF-related API methods.\n")
@@ -52,22 +49,10 @@ func main() {
 
 	flagset.Parse(fs)
 
-	err := flagset.SetFlagsFromEnvVars(fs, "EDTF")
+	err := flagset.SetFlagsFromEnvVarsWithFeedback(fs, "EDTF", true)
 
 	if err != nil {
 		log.Fatalf("Failed to set flags from environment variables, %v", err)
-	}
-
-	if *path_prefix != "" {
-
-		log.Println("HELLO")
-
-		*path_parse_api = filepath.Join(*path_prefix, *path_parse_api)
-		*path_valid_api = filepath.Join(*path_prefix, *path_valid_api)
-		*path_matches_api = filepath.Join(*path_prefix, *path_matches_api)
-		*path_edtf_string_api = filepath.Join(*path_prefix, *path_edtf_string_api)
-		*path_edtf_date_api = filepath.Join(*path_prefix, *path_edtf_date_api)
-		*path_www = filepath.Join(*path_prefix, *path_www)
 	}
 
 	ctx := context.Background()
@@ -82,11 +67,35 @@ func main() {
 
 	if *enable_www {
 
-		err := bootstrap.AppendAssetHandlersWithPrefix(mux, *path_prefix)
+		err := bootstrap.AppendAssetHandlers(mux)
 
 		if err != nil {
 			log.Fatalf("Failed to append Bootstrap asset handlers, %v", err)
 		}
+
+		// Okay, see this? The reason we've got two handlers here is that
+		// if we bundle the app's static assets, specifically the JS, is
+		// not handled correctly by the bootstrap.AppendResourcesHandler*
+		// methods. My hunch is that the aaronland/go-http-rewrite code
+		// that is used by the bootstrap code is expecting an explicit
+		// content type that the io/http.FS implementations are not (?)
+		// including. So for now we have separate handlers...
+		// (20210111/thisisaaronland)
+		
+		static_handler, err := sfom_www.StaticHandler()
+
+		if err != nil {
+			log.Fatalf("Failed to create WWW static handler, %v", err)
+		}
+
+		path_js := filepath.Join(*path_static, "javascript/")
+		path_css := filepath.Join(*path_static, "css/")
+
+		path_js = fmt.Sprintf("%s/", path_js)
+		path_css = fmt.Sprintf("%s/", path_css)
+
+		mux.Handle(path_js, http.StripPrefix(*path_static, static_handler))
+		mux.Handle(path_css, http.StripPrefix(*path_static, static_handler))
 
 		index_handler, err := sfom_www.IndexHandler()
 
@@ -94,17 +103,8 @@ func main() {
 			log.Fatalf("Failed to create WWW index handler, %v", err)
 		}
 
-		if *path_prefix != "" {
-
-			index_handler = http.StripPrefix(*path_prefix, index_handler)
-
-			if !strings.HasSuffix(*path_www, "/") {
-				*path_www = fmt.Sprintf("%s/", *path_www)
-			}
-		}
-
 		bootstrap_opts := bootstrap.DefaultBootstrapOptions()
-		index_handler = bootstrap.AppendResourcesHandlerWithPrefix(index_handler, bootstrap_opts, *path_prefix)
+		index_handler = bootstrap.AppendResourcesHandlerWithPrefix(index_handler, bootstrap_opts, *bootstrap_prefix)
 
 		mux.Handle(*path_www, index_handler)
 	}
@@ -117,12 +117,6 @@ func main() {
 			log.Fatalf("Failed to create API parse handler, %v", err)
 		}
 
-		/*
-			if *enable_cors {
-			api_parse_handler = c.Handler(api_parse_handler)
-			}
-		*/
-
 		mux.Handle(*path_parse_api, api_parse_handler)
 	}
 
@@ -134,12 +128,6 @@ func main() {
 			log.Fatalf("Failed to create API is valid handler, %v", err)
 		}
 
-		/*
-			if *enable_cors {
-				api_valid_handler = c.Handler(api_valid_handler)
-			}
-		*/
-
 		mux.Handle(*path_valid_api, api_valid_handler)
 	}
 
@@ -150,12 +138,6 @@ func main() {
 		if err != nil {
 			log.Fatalf("Failed to create API is matches handler, %v", err)
 		}
-
-		/*
-			if *enable_cors {
-				api_matches_handler = c.Handler(api_matches_handler)
-			}
-		*/
 
 		mux.Handle(*path_matches_api, api_matches_handler)
 	}

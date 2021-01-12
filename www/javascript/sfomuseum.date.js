@@ -10,7 +10,7 @@ sfomuseum.date = (function(){
 		"date": date,
 	    };
 	    
-	    self.call('/api/sfomuseum/to-edtf-string', params, on_success, on_error);
+	    self.call('api/sfomuseum/to-edtf-string', params, on_success, on_error);
 	},
 
 	'toEDTFDate': function(date, on_success, on_error){
@@ -19,7 +19,7 @@ sfomuseum.date = (function(){
 		"date": date,
 	    };
 	    
-	    self.call('/api/sfomuseum/to-edtf-date', params, on_success, on_error);
+	    self.call('api/sfomuseum/to-edtf-date', params, on_success, on_error);
 	},	
 
 	'call': function(method, data, on_success, on_error){
@@ -38,7 +38,7 @@ sfomuseum.date = (function(){
 		}
 	    };
 
-	    var endpoint = location.protocol + '//' + location.host;
+	    var endpoint = location.protocol + '//' + location.host + location.pathname;
 	    var url = endpoint + method;
 
 	    var params = new URLSearchParams()
