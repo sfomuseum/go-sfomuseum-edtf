@@ -125,6 +125,8 @@ $> curl -s 'http://localhost:8080/api/sfomuseum/to-edtf-date?date=1950s' | jq
 }
 ```
 
+_There is a working version of the `server` tool with a user-friendly web interface in [the www branch](https://github.com/sfomuseum/go-sfomuseum-edtf/tree/www) but it will require that you build a copy of Go 1.16, which is still in active development. Go 1.16 is slated for general release in February, 2021 at which point the `www` branch will be merged with the `main` branch._
+
 ### to-edtf
 
 Parse one or more SFO Museum date strings and return a list of JSON-encode edtf.EDTFDate objects.
