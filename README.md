@@ -11,6 +11,10 @@ If you need to customized or bespoke functionality for working with EDTF strings
 * https://github.com/sfomuseum/go-edtf
 * https://github.com/sfomuseum/go-edtf-http
 
+## Go 1.16
+
+This branch requires a Go 1.16 (or higher) binary. Go 1.16 is still in active development so you'll need to compile this yourself. You'll probably also want to update the path to the `GO` variable in the Makefile so that the various targets compile against the right version of Go.
+
 ## Example
 
 ```
@@ -239,7 +243,11 @@ $> curl -s 'http://localhost:8080/api/sfomuseum/to-edtf-date?date=1950s' | jq
 
 * Although it is possible to assign custom paths for API endpoints it is not yet possible to relay that information down to the Javascript files that invoke those endpoints. To that end custom API paths shouldn't be considered ready to use at this time.
 
-#### Lambda
+#### AWS
+
+These notes are for running the `server` in AWS using the Lambda -> API Gateway -> CloudFront pattern.
+
+##### Lambda
 
 _This documentation is incomplete._
 
@@ -253,23 +261,27 @@ zip server.zip main
 rm -f main
 ```
 
-##### Environment Variables
+###### Environment Variables
 
 | Name | Value | Notes |
 | --- | --- | --- |
 | EDTF_SERVER_URI | `lambda://` | |
 
-#### API Gateway
+##### API Gateway
 
 _This documentation is incomplete._
 
-##### (Lambda) Environment Variables
+###### (Lambda) Environment Variables
 
 If you are running the `server` tool as a Lambda function behind an API Gateway endpoint you'll need to set the following environment variables in your Lambda function:
 
 | Name | Value | Notes |
 | --- | --- | --- |
 | EDTF_BOOTSTRAP_PREFIX | {API_GATEWAY_DEPLOYMENT_STAGE} | For example if the deployment stage is "edtf" the value of this environment variable would be "/edtf" |
+
+##### CloudFront
+
+_This documentation is incomplete._
 
 ### to-edtf
 
