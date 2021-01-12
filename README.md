@@ -245,11 +245,15 @@ $> curl -s 'http://localhost:8080/api/sfomuseum/to-edtf-date?date=1950s' | jq
 
 #### AWS
 
-These notes are for running the `server` in AWS using the Lambda -> API Gateway -> CloudFront pattern.
+These notes are for running the `server` in AWS using the (this Go code) <- Lambda <- API Gateway <- CloudFront -> (Internet) pattern.
+
+As you'll see this pattern is not necessarily the _best_ choice for this particular application. Given that it's possible to compile all, or most, of the `go-edtf` and `go-sfmuseum-edtf` in to [WebAssembly (WASM) binaries](https://github.com/sfomuseum/go-edtf-wasm) another approach would be to simply have a static HTML+JavaScript+CSS website with only those WASM functions needed for the web application.
+
+The Lambda approach allows for increased flexbility in how the functionality is delivered but at the cost of increased overhead setting things up.
 
 ##### Lambda
 
-_This documentation is incomplete._
+The easiest way to build the `server` tool for use as an AWS Lambda function is to use the handy `lambda-server` target in the Makefile:
 
 ```
 $> make lambda-server
@@ -261,7 +265,11 @@ zip server.zip main
 rm -f main
 ```
 
+Create a standard Go-enabled Lambda function and upload the `server.zip` file as the function code. The IAM role used to run the Lambda function does not need any custom permissions beyond the basic permissions needed to execute Lambda functions.
+
 ###### Environment Variables
+
+You will need to assign the following environment variables to your Lambda function:
 
 | Name | Value | Notes |
 | --- | --- | --- |
@@ -269,7 +277,15 @@ rm -f main
 
 ##### API Gateway
 
-_This documentation is incomplete._
+In order to use the Lambda function created above with an API Gateway endpoint you'll need to do the following:
+
+* Create a basic "REST" API.
+* Create a new child resource on the main `/` resource. This should be configured as a "proxy resource".
+* Remove the default methods from the proxy resource.
+* Create a single `GET` method on the proxy resource. Configure the integration type to be "LAMBDA_PROXY" and point it at the Lambda function you created above.
+* Create a second child `GET` _method_ on the main `/` resource and configure its integration type to be "LAMBDA_PROXY" and point it at the Lambda function you created above.
+* In the second child method's "Method Response" configuration add a new "Response Body" for the `200` HTTP Status. It's content type should be `text/html` and it's "Model" should be `empty`.
+* Create a new "Deploy API" and give it a "deployment stage" name like `edtf` (it can be whatever you want it to be).
 
 ###### (Lambda) Environment Variables
 
@@ -281,7 +297,14 @@ If you are running the `server` tool as a Lambda function behind an API Gateway 
 
 ##### CloudFront
 
-_This documentation is incomplete._
+In order to use the API Gateway endpoint with a CloudFront resource you'll need to do the following:
+
+* Create a new "Origin" in your CloudFront resource. The "Origin Domain Name" property (of the new origin) should be hostname of your API Gateway endpoint _without_ the trailing deploy stage name, or path.
+* Set the "Origin Protocol Policy" property to be `HTTPS Only`.
+* Create a new "Behavior" in your CloudFront resource. The "Path Pattern" property (of the new behavior) should be `/{API_GATEWAY_DEPLOYMENT_STAGE}/*`. For example, For example if the API Gateway deployment stage is "edtf" the value of this property would be `/edtf/*`.
+* Set the "Viewer Protocol Policy" property to be `Redirect HTTP to HTTPS`.
+* Set the "Cache and origin request settings" property to `Use legacy cache settings` and then ensure the "Object Caching" property is configured to `Use Origin Cache Headers`.
+* Set the "Query String Forwarding and Caching" property to `Forward all, cache based on all`. This could also be configured to use an explicit "whitelist" of known parameters but defaulting to all will do for now.
 
 ### to-edtf
 
