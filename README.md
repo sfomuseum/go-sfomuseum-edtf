@@ -131,22 +131,38 @@ go build -mod vendor -o bin/to-edtf-string cmd/to-edtf-string/main.go
 HTTP server for exposing EDTF-related API methods.
 
 ```
-$> ./bin/server -h
+> ./bin/server -h
 HTTP server for exposing EDTF-related API methods.
 Usage:
 	 ./bin/server [options]
+  -bootstrap-prefix string
+    	A relative path to append to all Bootstrap-related paths the server will listen for requests on.
   -enable-edtf-date-api
-    	Enable the /api/sfomuseum/to-edtf-date endpoint (default true)
+    	Enable the SFO Museum to-edtf-date API endpoint (default true)
   -enable-edtf-string-api
-    	Enable the /api/sfomuseum/to-edtf-string endpoint (default true)
+    	Enable the SFO Museum to-edtf-string API endpoint (default true)
   -enable-matches-api
-    	Enable the /api/edtf/matches endpoint (default true)
+    	Enable the EDTF matches API endpoint (default true)
   -enable-parse-api
-    	Enable the /api/edtf/parse endpoint (default true)
+    	Enable the EDTF parse API endpoint (default true)
   -enable-valid-api
-    	Enable the /api/edtf/valid endpoint (default true)
+    	Enable the EDTF valid API endpoint (default true)
   -enable-www
-    	Enable the user-facing web interface (default true)
+    	Enable the user-facing web application. (default true)
+  -path-edtf-date-api string
+    	The path to listen for requests to the SFO Museum to-edtf-date API on. (default "/api/sfomuseum/to-edtf-date")
+  -path-edtf-string-api string
+    	The path to listen for requests to the SFO Museum to-edtf-string API on. (default "/api/sfomuseum/to-edtf-string")
+  -path-matches-api string
+    	The path to listen for requests to the EDTF matches API on. (default "/api/edtf/matches")
+  -path-parse-api string
+    	The path to listen for requests to the EDTF parse API on. (default "/api/edtf/parse")
+  -path-static string
+    	The path to listen for requests to the user-facing web application on. (default "/static")
+  -path-valid-api string
+    	The path to listen for requests to the EDTF valid API on. (default "/api/edtf/valid")
+  -path-www string
+    	The path to listen for requests to the user-facing web application on. (default "/")
   -server-uri string
     	A valid aaronland/go-http-server URI. (default "http://localhost:8080")
 ```
@@ -219,6 +235,10 @@ $> curl -s 'http://localhost:8080/api/sfomuseum/to-edtf-date?date=1950s' | jq
 }
 ```
 
+#### Notes
+
+* Although it is possible to assign custom paths for API endpoints it is not yet possible to relay that information down to the Javascript files that invoke those endpoints. To that end custom API paths shouldn't be considered ready to use at this time.
+
 #### Lambda
 
 _This documentation is incomplete._
@@ -242,6 +262,14 @@ rm -f main
 #### API Gateway
 
 _This documentation is incomplete._
+
+##### (Lambda) Environment Variables
+
+If you are running the `server` tool as a Lambda function behind an API Gateway endpoint you'll need to set the following environment variables in your Lambda function:
+
+| Name | Value | Notes |
+| --- | --- | --- |
+| EDTF_BOOTSTRAP_PREFIX | {API_GATEWAY_DEPLOYMENT_STAGE} | For example if the deployment stage is "edtf" the value of this environment variable would be "/edtf" |
 
 ### to-edtf
 
