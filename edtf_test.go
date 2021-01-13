@@ -8,7 +8,7 @@ var tests = map[string]map[string]string{
 	"MY": map[string]string{
 		"04/1972":   "1972-04",
 		"03/-1980":  "-1980-03",
-		"c. 3/1984": "1984-03~",
+		"c. 3/1984": "1984-~03",
 	},
 	"MDY": map[string]string{
 		"6/30/2010":     "2010-06-30",
