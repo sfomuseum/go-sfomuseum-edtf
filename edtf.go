@@ -96,7 +96,14 @@ func EDTFStringFromMY(raw string) (string, error) {
 	edtf_str := fmt.Sprintf(layout, yyyy, mm)
 
 	if circa != "" {
-		edtf_str = edtf_str + _edtf.APPROXIMATE
+
+		layout := "%04d-%s%02d"
+
+		if yyyy < 0 {
+			layout = "%05d-%s%02d"
+		}
+
+		edtf_str = fmt.Sprintf(layout, yyyy, _edtf.APPROXIMATE, mm)
 	}
 
 	return edtf_str, nil

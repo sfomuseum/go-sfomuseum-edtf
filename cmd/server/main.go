@@ -81,7 +81,7 @@ func main() {
 		// content type that the io/http.FS implementations are not (?)
 		// including. So for now we have separate handlers...
 		// (20210111/thisisaaronland)
-		
+
 		static_handler, err := sfom_www.StaticHandler()
 
 		if err != nil {
