@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>SFO Museum Date Converter Tool</title>
+    <script src="static/javascript/index.js"></script>
+    <script src="static/javascript/index.init.js"></script>
+    <script src="static/javascript/sfomuseum.date.js"></script>        
+    <link rel="stylesheet" type="text/css" href="static/css/common.css" />
+  </head>
+
+  <body>
+      <div class="container">
+
+	  <div class="row">
+	      <h1>SFO Museum Date Converter Tool</h1>
+	  </div>
+
+	  <div class="row">
+	      <ul id="feedback"></ul>
+	  </div>
+	  
+	  <div class="row" id="sfom_date_block">
+	      <form>
+		  <div class="form-group">
+		      <label for="date">SFO Museum Date</label>
+		      <input type="text" name="date" id="date" placeholder="Enter a date string here" />
+		      <button class="btn btn-primary" disabled id="submit" type="submit">Convert</button>
+		      <small id="data-help" class="form-text text-muted">The list of supported date patterns <a href="https://github.com/sfomuseum/go-sfomuseum-edtf#patterns" target="patterns">is available here</a>. There is also an <a href="validate/">EDTF date validator</a>.</small>
+		  </div>
+	      </form>
+	  </div>
+
+	  <div class="row" id="edtf_string_block">
+	      <h2>Extended DateTime Format String</h2>
+	      <pre id="edtf_string"></pre>
+	  </div>
+
+	  <div class="row" id="edtf_date_block">
+	      <h2>Extended DateTime Format Date</h2>
+	      <pre id="edtf_date"></pre>
+	  </div>
+	  
+      </div>
+      
+  </body>
+</html>

@@ -1,0 +1,25 @@
+pre {
+	border: solid thin;
+	padding:1rem;
+	background-color:#ededed;
+}
+
+#edtf_string_block {
+	display:none;
+	margin-top:2rem;
+}
+
+#edtf_date_block {
+	display:none;
+	margin-top:2rem;	
+}
+
+#feedback {
+	display:none;
+	font-style:italic;
+}
+
+#sfom_date_block {
+	margin-top:1rem;
+}
+

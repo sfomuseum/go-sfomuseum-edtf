@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>SFO Museum Date Converter Tool</title>
+    <script src="../static/javascript/wasm_exec.js"></script>
+    <script src="../static/javascript/validate.wasm.js"></script>    
+    <script src="../static/javascript/validate.wasm.init.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/css/common.css" />
+  </head>
+
+  <body>
+      <div class="container">
+
+	  <div class="row">
+	      <h1>SFO Museum EDTF Validator</h1>
+	  </div>
+	  <div class="row">
+	      <ul id="feedback"></ul>
+	  </div>
+	  <div class="row" id="sfom_date_block">
+	      <form>
+		  <div class="form-group">
+		      <label for="date">EDTF date</label>
+		      <input type="text" name="date" id="date" placeholder="Enter a date string here" />
+		      <button class="btn btn-primary" disabled id="submit" type="submit">Loading...</button>
+		      <small id="data-help" class="form-text text-muted">The EDTF syntax is <a href="https://www.loc.gov/standards/datetime/" target="edtf">documented here</a>.</small>
+		  </div>
+	      </form>
+	  </div>
+
+
+	  <div class="row" id="edtf_date_block">
+	      <h2>Extended DateTime Format Date</h2>
+	      <pre id="edtf_date"></pre>
+	  </div>
+	  
+      </div>
+      
+  </body>
+</html>
