@@ -10,6 +10,7 @@ import (
 
 //go:embed javascript
 //go:embed css
+//go:embed wasm
 var static_fs embed.FS
 
 func StaticHandler() (http.Handler, error) {
