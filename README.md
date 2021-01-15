@@ -243,6 +243,8 @@ $> curl -s 'http://localhost:8080/api/sfomuseum/to-edtf-date?date=1950s' | jq
 
 * Although it is possible to assign custom paths for API endpoints it is not yet possible to relay that information down to the Javascript files that invoke those endpoints. To that end custom API paths shouldn't be considered [ready to use at this time](https://github.com/sfomuseum/go-sfomuseum-edtf/issues/1).
 
+* This application includes a `/validate/` endpoint which has highlighted a number of issues around running it using the "Lambda <- API Gateway <- CloudFront". Currently the `/validate/` endpoint only works from run from `millsfield.sfomuseum.org`. These are discussed below.
+
 #### AWS
 
 These notes are for running the `server` in AWS using the (this Go code) <- Lambda <- API Gateway <- CloudFront -> (Internet) pattern.
@@ -250,6 +252,12 @@ These notes are for running the `server` in AWS using the (this Go code) <- Lamb
 As you'll see this pattern is not necessarily the _best_ choice for this particular application. Given that it's possible to compile all, or most, of the `go-edtf` and `go-sfmuseum-edtf` in to [WebAssembly (WASM) binaries](https://github.com/sfomuseum/go-edtf-wasm) another approach would be to simply have a static HTML+JavaScript+CSS website with only those WASM functions needed for the web application.
 
 The Lambda approach allows for increased flexbility in how the functionality is delivered but at the cost of increased overhead setting things up.
+
+As mentioned above there is also a `/validate` endpoint which is meant to expose a basic EDTF-only validator. Originally this was built using the same API + Javascript model that the SFOM date converter uses but in a `/validate/` sub-directory. This ends up compounding all the problems that already exist around defining custom paths (or even just the API Gateway prefix) and relaying that information down to the JavaScript. Because we aren't using templates there is no way to customize the paths that the JavaScript knows to use. Like where and how to construct URLs for API calls.
+
+As an alternative to this approach there was an attempt to use (and bundle) the `parse.wasm` WebAssembly binary (from the [go-edtf-wasm](https://github.com/sfomuseum/go-edtf-wasm) package) in the `server` binary itself and adjust all the application JavaScript to use that instead. That worked and was (is) a good example of the different ways to accomplish the same thing. The problem is, however, that when the Lambda function is asked to return the `parse.wasm` file it fails with a "Body too big" error. Lambda is said to be limited to a 6MB body size so I am not sure what's going on here since the wasm binary is only 3MB.
+
+As a workaround to all of this the `parse.wasm` binary is now being served out of the [Mills Field](https://millsfield.sfomuseum.org) website itself. It is worth noting that even this approach involved adding a `AddType application/wasm .wasm` directive to the site's configuration in order to make JavaScript happy. One reason for mentioning that is that even if we served this entire application as a static website from an S3 bucket (and there are many reasons to think this would be the best thing to do) we would need to ensure that [the correct content-type is assigned](https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObject.html) to the WebAssembly binary.
 
 ##### Lambda
 
