@@ -97,16 +97,16 @@ func main() {
 		mux.Handle(path_js, http.StripPrefix(*path_static, static_handler))
 		mux.Handle(path_css, http.StripPrefix(*path_static, static_handler))
 
-		index_handler, err := sfom_www.IndexHandler()
+		application_handler, err := sfom_www.ApplicationHandler()
 
 		if err != nil {
 			log.Fatalf("Failed to create WWW index handler, %v", err)
 		}
 
 		bootstrap_opts := bootstrap.DefaultBootstrapOptions()
-		index_handler = bootstrap.AppendResourcesHandlerWithPrefix(index_handler, bootstrap_opts, *bootstrap_prefix)
+		application_handler = bootstrap.AppendResourcesHandlerWithPrefix(application_handler, bootstrap_opts, *bootstrap_prefix)
 
-		mux.Handle(*path_www, index_handler)
+		mux.Handle(*path_www, application_handler)
 	}
 
 	if *enable_parse_api {

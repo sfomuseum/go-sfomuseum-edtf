@@ -22,6 +22,15 @@ sfomuseum.date = (function(){
 	    self.call('api/sfomuseum/to-edtf-date', params, on_success, on_error);
 	},	
 
+	'edtfStringtoEDTFDate': function(date, on_success, on_error){
+
+	    var params = {
+		"date": date,
+	    };
+	    
+	    self.call('api/edtf/parse', params, on_success, on_error);
+	},	
+	
 	'call': function(method, data, on_success, on_error){
     
 	    var dothis_onsuccess = function(rsp){
