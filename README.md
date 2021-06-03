@@ -11,10 +11,6 @@ If you need to customized or bespoke functionality for working with EDTF strings
 * https://github.com/sfomuseum/go-edtf
 * https://github.com/sfomuseum/go-edtf-http
 
-## Go 1.16
-
-This branch requires a Go 1.16 (or higher) binary. Go 1.16 is still in active development so you'll need to compile this yourself. You'll probably also want to update the path to the `GO` variable in the Makefile so that the various targets compile against the right version of Go.
-
 ## Example
 
 ```
