@@ -9,6 +9,7 @@ func TestRegularExpressionPatterns(t *testing.T) {
 
 	patterns := []string{
 		PATTERN_MY,
+		PATTERN_MY_LONGFORM,
 		PATTERN_MDY,
 		PATTERN_EARLY,
 		PATTERN_MID,

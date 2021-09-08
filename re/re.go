@@ -6,6 +6,8 @@ import (
 
 const PATTERN_MY string = `^(?i)(c\.?\s+)?(\d+)/(\-?\d{4}).*`
 
+const PATTERN_MY_LONGFORM string = `^(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4}).*`
+
 const PATTERN_MDY string = `^(?i)(c\.?\s+)?(\d+)/(\d+)/(\-?\d{4}).*`
 
 const PATTERN_EARLY string = `^(?i)(c\.?\s)?early\s+(\-?\d{4})s.*`
@@ -23,6 +25,8 @@ const PATTERN_YYYY string = `^(?i)(c\.?\s+)?(\s+\-\s+)?(\-?\d{4}).*`
 const PATTERN_MDYHUMAN string = `(?i)(\w+)\s+(\d{1,2})\,?\s+(\-?\d{4}).*`
 
 var MY *regexp.Regexp
+
+var MY_LONGFORM *regexp.Regexp
 
 var MDY *regexp.Regexp
 
@@ -43,6 +47,8 @@ var MDYHUMAN *regexp.Regexp
 func init() {
 
 	MY = regexp.MustCompile(PATTERN_MY)
+
+	MY_LONGFORM = regexp.MustCompile(PATTERN_MY_LONGFORM)
 
 	MDY = regexp.MustCompile(PATTERN_MDY)
 

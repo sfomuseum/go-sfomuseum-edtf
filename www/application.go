@@ -2,9 +2,9 @@ package www
 
 import (
 	"embed"
-	"net/http"
-	"log"
 	"io/fs"
+	"log"
+	"net/http"
 )
 
 // See note in cmd/server/main.go for why this is distinct
@@ -27,7 +27,7 @@ func ApplicationHandler() (http.Handler, error) {
 	}
 
 	fs.WalkDir(web_app, ".", fn)
-	
+
 	http_fs := http.FS(web_app)
 	fs_handler := http.FileServer(http_fs)
 

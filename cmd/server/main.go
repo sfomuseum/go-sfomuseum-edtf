@@ -90,15 +90,15 @@ func main() {
 
 		path_js := filepath.Join(*path_static, "javascript/")
 		path_css := filepath.Join(*path_static, "css/")
-		path_wasm := filepath.Join(*path_static, "wasm/")		
+		path_wasm := filepath.Join(*path_static, "wasm/")
 
 		path_js = fmt.Sprintf("%s/", path_js)
 		path_css = fmt.Sprintf("%s/", path_css)
-		path_wasm = fmt.Sprintf("%s/", path_wasm)		
+		path_wasm = fmt.Sprintf("%s/", path_wasm)
 
 		mux.Handle(path_js, http.StripPrefix(*path_static, static_handler))
 		mux.Handle(path_css, http.StripPrefix(*path_static, static_handler))
-		mux.Handle(path_wasm, http.StripPrefix(*path_static, static_handler))		
+		mux.Handle(path_wasm, http.StripPrefix(*path_static, static_handler))
 
 		application_handler, err := sfom_www.ApplicationHandler()
 

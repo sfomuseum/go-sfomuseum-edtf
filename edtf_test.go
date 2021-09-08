@@ -10,6 +10,9 @@ var tests = map[string]map[string]string{
 		"03/-1980":  "-1980-03",
 		"c. 3/1984": "1984-~03",
 	},
+	"MY_LONGFORM": map[string]string{
+		"June 1970": "1970-06",
+	},
 	"MDY": map[string]string{
 		"6/30/2010":     "2010-06-30",
 		"c. 02/29/2020": "2020-02-29~",

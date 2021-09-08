@@ -28,6 +28,10 @@ func ToEDTFString(raw string) (string, error) {
 		return EDTFStringFromMY(raw)
 	}
 
+	if re.MY_LONGFORM.MatchString(raw) {
+		return EDTFStringFromMYLongForm(raw)
+	}
+
 	if re.MDY.MatchString(raw) {
 		return EDTFStringFromMDY(raw)
 	}
@@ -107,6 +111,23 @@ func EDTFStringFromMY(raw string) (string, error) {
 	}
 
 	return edtf_str, nil
+}
+
+func EDTFStringFromMYLongForm(raw string) (string, error) {
+
+	m := re.MY_LONGFORM.FindStringSubmatch(raw)
+
+	if len(m) != 3 {
+		return "", errors.Invalid()
+	}
+
+	t, err := time.Parse("January 2006", raw)
+
+	if err != nil {
+		return "", errors.Invalid()
+	}
+
+	return t.Format("2006-01"), nil
 }
 
 func EDTFStringFromMDY(raw string) (string, error) {
