@@ -4,23 +4,23 @@ import (
 	"regexp"
 )
 
-const PATTERN_MY string = `^(?i)(c\.?\s+)?(\d+)/(\-?\d{4}).*`
+const PATTERN_MY string = `^(?i)(c\.?\s*)?(\d+)/(\-?\d{4}).*`
 
 const PATTERN_MY_LONGFORM string = `^(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4}).*`
 
-const PATTERN_MDY string = `^(?i)(c\.?\s+)?(\d+)/(\d+)/(\-?\d{4}).*`
+const PATTERN_MDY string = `^(?i)(c\.?\s*)?(\d+)/(\d+)/(\-?\d{4}).*`
 
-const PATTERN_EARLY string = `^(?i)(c\.?\s)?early\s+(\-?\d{4})s.*`
+const PATTERN_EARLY string = `^(?i)(c\.?\s*)?early\s+(\-?\d{4})s.*`
 
-const PATTERN_MID string = `^(?i)(c\.?\s+)?mid\s+(\-?\d{4})s.*`
+const PATTERN_MID string = `^(?i)(c\.?\s*)?mid\s+(\-?\d{4})s.*`
 
-const PATTERN_LATE string = `^(?i)(c\.?\s+)?late\s+(\-?\d{4})s.*`
+const PATTERN_LATE string = `^(?i)(c\.?\s*)?late\s+(\-?\d{4})s.*`
 
-const PATTERN_DECADE string = `^(?i)(c\.?\s+)?(\d{3})0s.*$`
+const PATTERN_DECADE string = `^(?i)(c\.?\s*)?(\d{3})0s.*$`
 
-const PATTERN_RANGE string = `^(?i)(c\.?\s+)?(\-?\d{4})(?:\s+)?\-(?:\s+)?(\-?\d{4}).*`
+const PATTERN_RANGE string = `^(?i)(c\.?\s*)?(\-?\d{4})(?:\s+)?\-(?:\s+)?(\-?\d{4}).*`
 
-const PATTERN_YYYY string = `^(?i)(c\.?\s+)?(\s+\-\s+)?(\-?\d{4}).*`
+const PATTERN_YYYY string = `^(?i)(c\.?\s*)?(\-?)(\d{4}).*`
 
 const PATTERN_MDYHUMAN string = `(?i)(\w+)\s+(\d{1,2})\,?\s+(\-?\d{4}).*`
 

@@ -36,6 +36,7 @@ var tests = map[string]map[string]string{
 	"DECADE": map[string]string{
 		"1930s":   "193X",
 		"c 1980s": "~198X-01-01/~198X-12-31",
+		"c.1980s": "~198X-01-01/~198X-12-31",
 	},
 	"RANGE": map[string]string{
 		"1970 - 1980":    "1970/1980",
@@ -43,11 +44,13 @@ var tests = map[string]map[string]string{
 		"c. 1994 -2010":  "~1994/~2010",
 		"c. 2018- 2020":  "~2018/~2020",
 		"c. -0100- 2020": "~-0100/~2020",
+		"c.-0100- 2020":  "~-0100/~2020",
 	},
 	"YYYY": map[string]string{
 		"1900":     "1900",
 		"c. 1843":  "1843~",
 		"c. -0200": "-0200~",
+		"c.1946":   "1946~",
 	},
 	"MDYHUMAN": map[string]string{
 		"Mar 03 1960":  "1960-03-03",

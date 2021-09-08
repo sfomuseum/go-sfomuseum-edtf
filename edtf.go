@@ -333,7 +333,7 @@ func EDTFStringFromYYYY(raw string) (string, error) {
 	edtf_str := fmt.Sprintf(layout, yyyy)
 
 	if before != "" {
-		edtf_str = fmt.Sprintf("%s/%s", _edtf.UNKNOWN, edtf_str)
+		edtf_str = fmt.Sprintf("-%s", edtf_str)
 	}
 
 	if circa != "" {
