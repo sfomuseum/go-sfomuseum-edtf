@@ -55,6 +55,12 @@ The following date patterns, used by SFO Museum, are supported by this package.
 | 04/1972 | 1972-04 |
 | c. 3/1984 | 1984-03~ |
 
+### Month Year (longform)
+
+| SFO Museum string | EDTF string |
+| --- | --- |
+| June 1970 | 1970-06 |
+
 ### Month/Day/Year
 
 | SFO Museum string | EDTF string |
