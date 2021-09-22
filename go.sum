@@ -41,6 +41,8 @@ github.com/sfomuseum/go-edtf v0.2.2 h1:8n1UekTCU6fkgAf3bWqG5RyQxOd9hRhy4lg91aQ3k
 github.com/sfomuseum/go-edtf v0.2.2/go.mod h1:1rP0EJZ/84j3HO80vGcnG2T9MFBDAFyTNtjrr8cv3T4=
 github.com/sfomuseum/go-edtf v0.2.3 h1:wpcpwl1RD9W/sXFDi4zpoIpQcIwIk8em9CGwa7YWv4g=
 github.com/sfomuseum/go-edtf v0.2.3/go.mod h1:1rP0EJZ/84j3HO80vGcnG2T9MFBDAFyTNtjrr8cv3T4=
+github.com/sfomuseum/go-edtf v0.2.4 h1:74T8YgcypVOCBvcGq6tWD7A7YpMrxwwbXTxmtf6Dg5M=
+github.com/sfomuseum/go-edtf v0.2.4/go.mod h1:1rP0EJZ/84j3HO80vGcnG2T9MFBDAFyTNtjrr8cv3T4=
 github.com/sfomuseum/go-edtf-http v0.0.0-20210109010542-0c4c6271afa3 h1:F7z2hNycSSDTyKBJ4BCJuikOntdbnstPG5U+tPCplkI=
 github.com/sfomuseum/go-edtf-http v0.0.0-20210109010542-0c4c6271afa3/go.mod h1:9XcI293mHv1zv4YNhZutPgfmJsRUsFKMN/ActV/dZFU=
 github.com/sfomuseum/go-edtf-http v0.0.1 h1:yOs49R5xrOlRJu7SOBj+i1biqoZyey/5YYnk8NwZRcI=

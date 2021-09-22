@@ -6,7 +6,7 @@ require (
 	github.com/aaronland/go-http-bootstrap v0.1.0
 	github.com/aaronland/go-http-sanitize v0.0.5
 	github.com/aaronland/go-http-server v0.0.7
-	github.com/sfomuseum/go-edtf v0.2.3
+	github.com/sfomuseum/go-edtf v0.2.4
 	github.com/sfomuseum/go-edtf-http v0.0.3
 	github.com/sfomuseum/go-flags v0.8.2
 )
