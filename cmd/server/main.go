@@ -3,16 +3,17 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"path/filepath"
+
 	"github.com/aaronland/go-http-bootstrap"
 	"github.com/aaronland/go-http-server"
 	edtf_api "github.com/sfomuseum/go-edtf-http/api"
 	"github.com/sfomuseum/go-flags/flagset"
 	sfom_api "github.com/sfomuseum/go-sfomuseum-edtf/api"
 	sfom_www "github.com/sfomuseum/go-sfomuseum-edtf/www"
-	"log"
-	"net/http"
-	"os"
-	"path/filepath"
 )
 
 func main() {
@@ -67,7 +68,10 @@ func main() {
 
 	if *enable_www {
 
-		err := bootstrap.AppendAssetHandlers(mux)
+		bootstrap_opts := bootstrap.DefaultBootstrapOptions()
+		bootstrap_opts.Prefix = *bootstrap_prefix
+
+		err := bootstrap.AppendAssetHandlers(mux, bootstrap_opts)
 
 		if err != nil {
 			log.Fatalf("Failed to append Bootstrap asset handlers, %v", err)
@@ -106,8 +110,7 @@ func main() {
 			log.Fatalf("Failed to create WWW index handler, %v", err)
 		}
 
-		bootstrap_opts := bootstrap.DefaultBootstrapOptions()
-		application_handler = bootstrap.AppendResourcesHandlerWithPrefix(application_handler, bootstrap_opts, *bootstrap_prefix)
+		application_handler = bootstrap.AppendResourcesHandler(application_handler, bootstrap_opts)
 
 		mux.Handle(*path_www, application_handler)
 	}

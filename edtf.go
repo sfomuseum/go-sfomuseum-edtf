@@ -2,13 +2,14 @@ package edtf
 
 import (
 	"fmt"
+	"strconv"
+	"time"
+
 	_edtf "github.com/sfomuseum/go-edtf"
 	"github.com/sfomuseum/go-edtf/common"
 	"github.com/sfomuseum/go-edtf/parser"
 	"github.com/sfomuseum/go-sfomuseum-edtf/errors"
 	"github.com/sfomuseum/go-sfomuseum-edtf/re"
-	"strconv"
-	"time"
 )
 
 func ToEDTFDate(raw string) (*_edtf.EDTFDate, error) {
