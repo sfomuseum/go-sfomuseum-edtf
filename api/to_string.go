@@ -2,9 +2,10 @@ package api
 
 import (
 	"encoding/json"
-	"github.com/aaronland/go-http-sanitize"
-	"github.com/sfomuseum/go-sfomuseum-edtf"
 	"net/http"
+
+	"github.com/aaronland/go-http-sanitize"
+	"github.com/sfomuseum/go-sfomuseum-edtf"	
 )
 
 func ToEDTFStringHandler() (http.HandlerFunc, error) {
