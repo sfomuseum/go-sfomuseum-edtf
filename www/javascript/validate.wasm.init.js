@@ -27,7 +27,10 @@ window.addEventListener("load", function load(event){
     // this is being served directly from the MF website. Computers, amirite...
     // (20210115/thisisaaronland)
 
-    WebAssembly.instantiateStreaming(fetch("/wasm/edtf/parse.wasm"), go.importObject).then(
+    // WebAssembly.instantiateStreaming(fetch("../static/javascript/parse.wasm"), go.importObject).then(
+
+    // So instead we just read the WASM file hosted from the millsfield.sfomuseum.org website. Womp womp...
+    WebAssembly.instantiateStreaming(fetch("/wasm/edtf/parse.wasm"), go.importObject).then(	
 	
 	async result => {
 
@@ -51,14 +54,29 @@ window.addEventListener("load", function load(event){
 		feedback.style.display = "none";	
 		feedback.innerHTML = "";
 
-		try {
-		    edtf_string_to_edtf_date(date_str);
-		} catch (err){
-		    var item = document.createElement("li");
-		    item.innerText = "Unable to convert date to EDTF date: " + err;
-		    feedback.appendChild(item);
-		    feedback.style.display = "block";
-		}
+		var result_el = document.getElementById("edtf_date_block");
+		
+		parse_edtf(date_str).then(rsp => {
+		    
+		    try {
+			var edtf_d = JSON.parse(rsp)
+		    } catch(e){
+			result_el.innerText = "Unable to parse your EDTF string: " + e;
+			
+			result_el.style.display = "block";
+			return;
+		    }
+		    
+		    var pre = document.createElement("pre");
+		    pre.innerText = JSON.stringify(edtf_d, '', 2);
+		    
+		    result_el.appendChild(pre);
+		    result_el.style.display = "block";
+		    
+		}).catch(err => {
+		    result_el.innerText = "There was a problem parsing your EDTF string:" + err;
+		    result_el.style.display = "block";
+		});
 		
 		return false;
 	    };
